@@ -47,10 +47,9 @@ def make_chains(text_string):
 
     return chains
 
-
+'''
 def make_text(chains):
     """Take dictionary of Markov chains; return random text."""
-
     key = choice(chains.keys())
     words = [key[0], key[1]]
     while key in chains:
@@ -67,6 +66,37 @@ def make_text(chains):
     tweet_string = " ".join(words)
 
     return tweet_string[:140]
+'''
+
+
+def make_text(chains):
+    """Return text from chains."""
+
+    words = []
+
+    # your code goes here
+    # find a random key
+    ngram = choice(chains.keys())
+
+    # if the randomly selected key doesn't start with a capital letter
+    # keep picking new random keys until we find one that does
+    while ngram[0].istitle() is False:
+        ngram = choice(chains.keys())
+
+    # add to words list
+    words.extend(ngram)
+
+    while ngram in chains:
+        word = choice(chains[ngram])
+        words.append(word)
+        ngram = (ngram[1], word)
+
+    tweet_string = " ".join(words)[:140]
+
+    while tweet_string[-1] not in '?."!':
+        tweet_string = tweet_string[:-1]
+
+    return tweet_string
 
 
 def tweet(chains):
